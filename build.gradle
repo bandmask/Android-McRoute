@@ -16,15 +16,15 @@ android {
     signingConfigs {
         release {
             keyAlias 'mcroute'
-            keyPassword 'gAnd4lf123'
-            storeFile file('C:/Users/nijo7810/.android/keystore/mcroute.jks')
-            storePassword 'gAnd4lf123'
+            keyPassword KEYSTORE_PASSWORD
+            storeFile file(STOREFILE_RELEASE)
+            storePassword KEYSTORE_PASSWORD
         }
         debug {
             keyAlias 'mcroute_debug'
-            keyPassword 'gAnd4lf123'
-            storeFile file('C:/Users/nijo7810/.android/keystore/mcroute_debug.jks')
-            storePassword 'gAnd4lf123'
+            keyPassword KEYSTORE_PASSWORD
+            storeFile file(STOREFILE_DEBUG)
+            storePassword KEYSTORE_PASSWORD
         }
     }
 
