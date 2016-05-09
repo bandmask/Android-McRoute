@@ -1,0 +1,26 @@
+<resources>
+    <string name="server_client_id">479488697853-hhm4itohl6kcqi7ehj549c5avm286fhp.apps.googleusercontent.com</string>
+
+    <string name="app_name">McRoute</string>
+
+    <string name="login_header">Login using provider</string>
+    <string name="login_action_google">Google+</string>
+
+    <string name="about_header">About McRoute</string>
+
+    <string name="start_new_route">Start new route</string>
+    <string name="start_routing_text">Start routing</string>
+    <string name="stop_routing_text">Stop routing</string>
+    <string name="default_date">2014-10-01 23:59:59</string>
+    <string name="default_route_id">Test route</string>
+    <string name="route_title">Title</string>
+    <string name="routing_count"># routings:</string>
+
+    <string name="menu_main_action_about">About</string>
+
+    <string name="menu_session_signout">Sign out</string>
+
+    <string name="menu_route_action_save">Save</string>
+    <string name="menu_route_action_sync">Sync</string>
+    <string name="menu_route_action_delete">Delete</string>
+</resources>

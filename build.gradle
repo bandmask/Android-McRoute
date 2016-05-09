@@ -1,0 +1,55 @@
+apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion "23.0.2"
+    useLibrary 'org.apache.http.legacy'
+    defaultConfig {
+        applicationId "com.ropr.mcroute"
+        minSdkVersion 23
+        targetSdkVersion 23
+        versionCode 1
+        versionName "1.0"
+    }
+
+    signingConfigs {
+        release {
+            keyAlias 'mcroute'
+            keyPassword 'gAnd4lf123'
+            storeFile file('C:/Users/nijo7810/.android/keystore/mcroute.jks')
+            storePassword 'gAnd4lf123'
+        }
+        debug {
+            keyAlias 'mcroute_debug'
+            keyPassword 'gAnd4lf123'
+            storeFile file('C:/Users/nijo7810/.android/keystore/mcroute_debug.jks')
+            storePassword 'gAnd4lf123'
+        }
+    }
+
+    buildTypes {
+        debug {
+            minifyEnabled false
+            versionNameSuffix '-DEBUG'
+            signingConfig signingConfigs.debug
+        }
+        release {
+            shrinkResources false
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+    }
+    productFlavors {
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    testCompile 'junit:junit:4.12'
+    compile 'com.android.support:appcompat-v7:23.1.1'
+    compile 'com.android.support:design:23.1.1'
+    compile 'com.google.code.gson:gson:2.6.2'
+    compile 'com.google.android.gms:play-services:8.3.0'
+}

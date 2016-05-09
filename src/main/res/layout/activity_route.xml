@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="${relativePackage}.${activityClass}" >
+
+    <TextView
+        android:id="@+id/new_route_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="20dp"
+        android:text="@string/route_title"
+        android:textAllCaps="true"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <EditText
+        android:id="@+id/route_title_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/new_route_title"
+        android:layout_alignBottom="@+id/new_route_title"
+        android:layout_toEndOf="@+id/new_route_title"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="26dp"
+        android:ems="10"
+        android:inputType="text" />
+
+    <Button
+        android:id="@+id/start_route_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="62dp"
+        android:enabled="false"
+        android:text="@string/start_routing_text" />
+
+    <TextView
+        android:id="@+id/play_services_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/start_route_button"
+        android:layout_marginTop="26dp"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/lblRoutingCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/play_services_status"
+        android:layout_marginTop="85dp"
+        android:text="@string/routing_count" />
+
+    <TextView
+        android:id="@+id/routing_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/lblRoutingCount"
+        android:layout_alignBottom="@+id/lblRoutingCount"
+        android:layout_marginStart="26dp"
+        android:layout_toEndOf="@+id/lblRoutingCount" />
+
+    <ListView
+        android:id="@+id/routing_list_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/play_services_status"
+        android:layout_marginTop="114dp" />
+
+
+</RelativeLayout>
