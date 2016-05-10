@@ -1,4 +1,4 @@
-/build
+build/*
 google-services.json
-/src/**/configs
+src/main/java/com/ropr/mcroute/configs/*.java
 *.apk
