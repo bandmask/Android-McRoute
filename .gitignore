@@ -1,1 +1,4 @@
-/build
+/build/*
+google-services.json
+/src/**/configs/*
+*.apk
