@@ -17,6 +17,7 @@ import android.os.PowerManager.WakeLock;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -53,7 +54,8 @@ import java.util.Locale;
 
 public class Route_Activity extends FragmentActivity implements LocationUpdater, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
-	private boolean _routeIsSynced;
+	private boolean _routingInProgress;
+	private boolean _overrideStartRouting;
 	private boolean _isPlayServicesActive;
 	private final int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
 
@@ -102,11 +104,21 @@ public class Route_Activity extends FragmentActivity implements LocationUpdater,
 		Bundle b = intent.getExtras();
 		_routeTitle = (EditText) findViewById(R.id.route_title_value);
 
-		try {
-			_activeRoute = (McRoute) b.get(StaticResources.EXTRA_ROUTE);
-			_routeTitle.setText(_activeRoute.getTitle());
-		} catch (Exception ex) {
-			_activeRoute = new McRoute();
+		if (savedInstanceState == null) {
+			try {
+				_activeRoute = (McRoute) b.get(StaticResources.EXTRA_ROUTE);
+				_routeTitle.setText(_activeRoute.getTitle());
+			} catch (Exception ex) {
+				_activeRoute = new McRoute();
+			}
+		} else {
+			try {
+				_activeRoute = (McRoute) savedInstanceState.getParcelable(StaticResources.SAVED_INSTANCE_ROUTE);
+				_routingInProgress = savedInstanceState.getBoolean(StaticResources.SAVED_INSTANCE_ROUTING_IN_PROGRESS);
+				_overrideStartRouting = _routingInProgress;
+			} catch (Exception ex) {
+				_activeRoute = new McRoute();
+			}
 		}
 
 		TextView routingCount = (TextView) findViewById(R.id.routing_count);
@@ -180,6 +192,9 @@ public class Route_Activity extends FragmentActivity implements LocationUpdater,
 			_routingButton.setEnabled(true);
 
 			Toast.makeText(this, "Google API Connected", Toast.LENGTH_SHORT).show();
+
+			if (_overrideStartRouting)
+				startRouting(_routingButton);
 		} else {
 			_isPlayServicesActive = true;
 			notifyPlayServicesNotAvailable(sourceCode, "Tracking not available");
@@ -197,9 +212,13 @@ public class Route_Activity extends FragmentActivity implements LocationUpdater,
 			return;
 		}
 
-		if (routeButton.getText() == getString(R.string.start_routing_text) && _isPlayServicesActive) {
+		if (_isPlayServicesActive && (_overrideStartRouting || routeButton.getText() == getString(R.string.start_routing_text))) {
 			routeButton.setText(getString(R.string.stop_routing_text));
-			LocalBroadcastManager.getInstance(this).registerReceiver(_locationReceiver, new IntentFilter("location_event"));
+
+			_routingInProgress = true;
+			_overrideStartRouting = false;
+
+			LocalBroadcastManager.getInstance(this).registerReceiver(_locationReceiver, new IntentFilter(StaticResources.EVENT_NEW_LOCATION));
 
 			_locationRequest = LocationRequest.create();
 			_locationRequest.setInterval(1000);
@@ -213,8 +232,11 @@ public class Route_Activity extends FragmentActivity implements LocationUpdater,
 			playServicesAvailable.setText("Routing started");
 		} else {
 			routeButton.setText(getResources().getString(R.string.start_routing_text));
+
+			_routingInProgress = false;
 			TextView playServicesAvailable = (TextView) findViewById(R.id.play_services_status);
 			playServicesAvailable.setText("Routing stopped");
+			LocalBroadcastManager.getInstance(this).unregisterReceiver(_locationReceiver);
 			LocationServices.FusedLocationApi.removeLocationUpdates(_locationClient, _pendingIntent);
 		}
 	}
@@ -285,6 +307,8 @@ public class Route_Activity extends FragmentActivity implements LocationUpdater,
 
 			if (_locationClient != null && _locationClient.isConnected())
 				_locationClient.disconnect();
+
+			LocalBroadcastManager.getInstance(this).unregisterReceiver(_locationReceiver);
 		} catch (Exception ex) {
 			Log.e("DisconnectAPI", "Error disconnecting api: " + ex.getMessage());
 		}
@@ -309,13 +333,18 @@ public class Route_Activity extends FragmentActivity implements LocationUpdater,
 		resultIntent.putExtra(StaticResources.EXTRA_ROUTE, _activeRoute);
 
 		int resultCode;
-		if (_routeIsSynced)
-			resultCode = StaticResources.ROUTE_SYNCED;
-		else
-			resultCode = RESULT_OK;
+		resultCode = RESULT_OK;
 
 		setResult(resultCode, resultIntent);
 		finish();
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle saveInstanceState) {
+		super.onSaveInstanceState(saveInstanceState);
+
+		saveInstanceState.putParcelable(StaticResources.SAVED_INSTANCE_ROUTE, _activeRoute);
+		saveInstanceState.putBoolean(StaticResources.SAVED_INSTANCE_ROUTING_IN_PROGRESS, _routingInProgress);
 	}
 
 	private void deleteRoute() {
@@ -342,12 +371,8 @@ public class Route_Activity extends FragmentActivity implements LocationUpdater,
 
 	private void handleSyncRoute() {
 		JsonObject response = ApiHttpHandler.getInstance().HandlePost("mcroute/", McRouteJsonParser.toJson(_activeRoute));
-		/*runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				Toast.makeText(getApplicationContext(), "Route is " + (_routeIsSynced ? "synced" : "unsynced"), Toast.LENGTH_SHORT).show();
-			}
-		});*/
+		Toast.makeText(getApplicationContext(), "Route is synced", Toast.LENGTH_SHORT).show();
+
 	}
 
 	@Override
@@ -363,12 +388,15 @@ public class Route_Activity extends FragmentActivity implements LocationUpdater,
 				e.printStackTrace();
 			}
 		}
+		_routingInProgress = false;
 	}
 
 	@Override
 	public void onConnectionSuspended(int cause) {
 		Toast.makeText(this, "Disconnected. Please re-connect.",
 				Toast.LENGTH_SHORT).show();
+
+		_routingInProgress = false;
 	}
 
 	@Override

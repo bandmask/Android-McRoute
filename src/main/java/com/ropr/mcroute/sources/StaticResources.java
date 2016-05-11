@@ -13,6 +13,11 @@ public class StaticResources {
 	public static final String EXTRA_SESSION_PROFILE = "com.mcroute.extra.session_profile";
 	public static final String EXTRA_PROFILE_ID = "com.mcroute.extra.profileid";
 
+	public static final String SAVED_INSTANCE_ROUTE = "com.mcroute.savedstate.route";
+	public static final String SAVED_INSTANCE_ROUTING_IN_PROGRESS = "com.mcroute.savedstate.routeinprogress";
+
+	public static final String EVENT_NEW_LOCATION = "com.mcroute.event.newlocation";
+
 	public static final int LOGIN_REQUEST_CODE = 5000;
 	public static final int START_ROUTE_REQUEST_CODE = 5001;
 	public static final int ROUTE_SYNCED = 5002;

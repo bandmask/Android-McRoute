@@ -8,6 +8,7 @@ import android.support.v4.content.LocalBroadcastManager;
 
 import com.google.android.gms.location.FusedLocationProviderApi;
 import com.google.android.gms.location.LocationResult;
+import com.ropr.mcroute.sources.StaticResources;
 
 public class LocationService extends IntentService {
 	public static final int MY_PERMISSION_ACCESS_LOCATION = 3;
@@ -26,7 +27,7 @@ public class LocationService extends IntentService {
 			LocationResult locationResult = LocationResult.extractResult(intent);
 			Location location = locationResult.getLastLocation();
 			if (location != null) {
-				Intent toBroadcast = new Intent("location_event");
+				Intent toBroadcast = new Intent(StaticResources.EVENT_NEW_LOCATION);
 				toBroadcast.putExtra(FusedLocationProviderApi.KEY_LOCATION_CHANGED, location);
 				LocalBroadcastManager.getInstance(this).sendBroadcast(toBroadcast);
 			}

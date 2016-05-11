@@ -138,7 +138,7 @@ public class RouteFragment extends Fragment {
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == StaticResources.START_ROUTE_REQUEST_CODE) {
 			try {
-				if (data.hasExtra(StaticResources.EXTRA_ROUTE)) {
+				if (data != null && data.hasExtra(StaticResources.EXTRA_ROUTE)) {
 					Bundle bundle = data.getExtras();
 					McRoute route = (McRoute) bundle.get(StaticResources.EXTRA_ROUTE);
 					if (resultCode == getActivity().RESULT_OK) {
