@@ -2,3 +2,4 @@ build/*
 google-services.json
 src/main/java/com/ropr/mcroute/configs/*.java
 *.apk
+ApiConfig.java
