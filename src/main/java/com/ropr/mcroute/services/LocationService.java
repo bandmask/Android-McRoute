@@ -3,7 +3,6 @@ package com.ropr.mcroute.services;
 import android.app.IntentService;
 import android.content.Intent;
 import android.location.Location;
-import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 
 import com.google.android.gms.location.FusedLocationProviderApi;

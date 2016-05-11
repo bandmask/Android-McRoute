@@ -1,5 +1,27 @@
 package com.ropr.mcroute.fragments;
 
+import android.app.Fragment;
+import android.content.Intent;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
+import android.widget.ListView;
+import android.widget.Toast;
+
+import com.mcroute.R;
+import com.ropr.mcroute.Route_Activity;
+import com.ropr.mcroute.adapters.RoutingAdapter;
+import com.ropr.mcroute.models.McRoute;
+import com.ropr.mcroute.sources.McRouteJsonParser;
+import com.ropr.mcroute.sources.StaticResources;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -10,30 +32,6 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.mcroute.R;
-import com.ropr.mcroute.Route_Activity;
-import com.ropr.mcroute.models.McRoute;
-import com.ropr.mcroute.models.McRouteProfile;
-import com.ropr.mcroute.sources.McRouteJsonParser;
-import com.ropr.mcroute.adapters.RoutingAdapter;
-import com.ropr.mcroute.sources.StaticResources;
-
-import android.app.Fragment;
-import android.content.Intent;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Button;
-import android.widget.ListView;
-import android.widget.Toast;
 
 public class RouteFragment extends Fragment {
 	private int _profileId = -1;

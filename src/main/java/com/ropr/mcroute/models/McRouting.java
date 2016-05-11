@@ -1,9 +1,9 @@
 package com.ropr.mcroute.models;
 
-import com.google.gson.annotations.SerializedName;
-
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import com.google.gson.annotations.SerializedName;
 
 public class McRouting implements Parcelable {
 	@SerializedName("Id")

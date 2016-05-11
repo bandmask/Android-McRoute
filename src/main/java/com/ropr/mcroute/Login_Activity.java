@@ -17,8 +17,6 @@ import com.mcroute.R;
 import com.ropr.mcroute.models.SessionData;
 import com.ropr.mcroute.sources.StaticResources;
 
-import java.io.Console;
-
 /**
  * Created by NIJO7810 on 2016-05-03.
  */

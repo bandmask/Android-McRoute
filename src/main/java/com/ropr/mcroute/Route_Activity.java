@@ -17,7 +17,6 @@ import android.os.PowerManager.WakeLock;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.LocalBroadcastManager;
-import android.support.v7.widget.LinearLayoutCompat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -113,7 +112,7 @@ public class Route_Activity extends FragmentActivity implements LocationUpdater,
 			}
 		} else {
 			try {
-				_activeRoute = (McRoute) savedInstanceState.getParcelable(StaticResources.SAVED_INSTANCE_ROUTE);
+				_activeRoute = savedInstanceState.getParcelable(StaticResources.SAVED_INSTANCE_ROUTE);
 				_routingInProgress = savedInstanceState.getBoolean(StaticResources.SAVED_INSTANCE_ROUTING_IN_PROGRESS);
 				_overrideStartRouting = _routingInProgress;
 			} catch (Exception ex) {

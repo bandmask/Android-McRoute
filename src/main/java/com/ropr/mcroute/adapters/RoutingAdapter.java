@@ -1,16 +1,16 @@
 package com.ropr.mcroute.adapters;
 
-import java.util.List;
-
-import com.mcroute.R;
-import com.ropr.mcroute.models.McRoute;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+
+import com.mcroute.R;
+import com.ropr.mcroute.models.McRoute;
+
+import java.util.List;
 
 public class RoutingAdapter extends BaseAdapter {
 	private Context _context;

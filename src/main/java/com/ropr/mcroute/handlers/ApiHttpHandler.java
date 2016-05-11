@@ -4,12 +4,11 @@ import android.os.AsyncTask;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.annotations.SerializedName;
 import com.ropr.mcroute.configs.ApiConfig;
 import com.ropr.mcroute.sources.StaticResources;
-
-import com.google.gson.JsonObject;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
