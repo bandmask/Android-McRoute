@@ -2,8 +2,6 @@ package com.ropr.mcroute.handlers;
 
 import android.os.AsyncTask;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.annotations.SerializedName;
@@ -40,11 +38,11 @@ public class ApiHttpHandler {
         _baseUrl = ApiConfig.API_ENDPOINT;
     }
 
-    public JsonObject handleGet(String function, HashMap<String, String> dataValues) throws IllegalStateException{
+    String handleGet(String function, HashMap<String, String> dataValues) throws IllegalStateException{
         return handleGet(getUrlForGet(function, dataValues));
     }
 
-    private JsonObject handleGet(String query) throws IllegalStateException {
+    private String handleGet(String query) throws IllegalStateException {
         HttpURLConnection connection = null;
         try {
             connection = getConnectionForRequest(StaticResources.HTTP_METHOD_GET, query);
@@ -54,7 +52,7 @@ public class ApiHttpHandler {
             if (result.hasError())
                 throw result.getError();
 
-            return handleResponseStream(result.getInputStream());
+            return result.getResultString();
         } catch (IOException ioException) {
             throw new IllegalStateException("Handle Get failur: IOException " + ioException.getMessage());
         }catch (Exception ex) {
@@ -65,7 +63,7 @@ public class ApiHttpHandler {
         }
     }
 
-    public JsonObject HandlePost(String function, String data) throws IllegalStateException {
+    String HandlePost(String function, String data) throws IllegalStateException {
         HttpURLConnection connection = null;
         try {
             connection = getConnectionForRequest(StaticResources.HTTP_METHOD_POST, _baseUrl + function);
@@ -78,7 +76,7 @@ public class ApiHttpHandler {
                 throw result.getError();
             }
 
-            return handleResponseStream(result.getInputStream());
+            return result.getResultString();
         } catch (IOException ioException) {
             throw new IllegalStateException("Handle Post failure: IOException " + ioException.getMessage());
         } catch (Exception ex) {
@@ -89,7 +87,7 @@ public class ApiHttpHandler {
         }
     }
 
-    public void HandleTokenFailure() throws IllegalStateException {
+    private void HandleTokenFailure() throws IllegalStateException {
         if (!StaticResources.SessionManager.getUseRefreshToken())
             throw new IllegalStateException("Unathorized connection, not using refresh token");
 
@@ -127,12 +125,12 @@ public class ApiHttpHandler {
                 throw new IllegalStateException("Token endpoint using refresh token failed, login again");
             }
 
-            JsonObject responseObject = handleResponseStream(connection.getInputStream());
+            String responseObject = handleResponseStream(connection.getInputStream());
 
-            Gson gson = new GsonBuilder().create();
-            TokenEndpointResponse response = gson.fromJson(responseObject, TokenEndpointResponse.class);
+            TokenEndpointResponse response = JsonHandler.getInstance().fromJson(responseObject, TokenEndpointResponse.class);
             StaticResources.SessionManager.updateAccessToken(response.getAccessToken());
             StaticResources.SessionManager.updateRefreshToken(response.getRefreshToken());
+
         } catch (MalformedInputException malformedException) {
             throw new IllegalStateException("Update access token failed: MalformedInputException " + malformedException.getMessage());
         } catch (IOException ioException) {
@@ -159,10 +157,10 @@ public class ApiHttpHandler {
                         return doInBackground(getConnectionForRequest(usedMethod, currentUrl));
                     }
 
-                    InputStream stream = connection.getInputStream();
+                    AsyncTaskResponse response = new AsyncTaskResponse(handleResponseStream(connection.getInputStream()));
                     connection.disconnect();
 
-                    return new AsyncTaskResponse(stream);
+                    return response;
                 }
             } catch (Exception exception) {
                 return new AsyncTaskResponse(exception);
@@ -198,10 +196,10 @@ public class ApiHttpHandler {
                         return doInBackground(new AsyncTaskPostRequest(getConnectionForRequest(usedMethod, currentUrl), request.getData()));
                     }
 
-                    InputStream stream = connection.getInputStream();
+                    AsyncTaskResponse response = new AsyncTaskResponse(handleResponseStream(connection.getInputStream()));
                     connection.disconnect();
 
-                    return new AsyncTaskResponse(stream);
+                    return response;
                 }
             } catch (Exception exception) {
                 return new AsyncTaskResponse(exception);
@@ -209,6 +207,23 @@ public class ApiHttpHandler {
 
             return new AsyncTaskResponse(new IllegalStateException("Network background thread failed."));
         }
+    }
+
+    private String handleResponseStream(InputStream stream) throws IOException{
+        BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+        StringBuilder builder = new StringBuilder();
+        String line;
+        while ((line = reader.readLine()) != null) {
+            builder.append(line);
+        }
+
+        reader.close();
+        stream.close();
+
+        if (builder.length() <= 0)
+            throw new IOException("Response stream did not yield any data.");
+
+        return builder.toString();
     }
 
     private HttpURLConnection getConnectionForRequest(String requestMethod, String urlString) throws IOException {
@@ -231,24 +246,6 @@ public class ApiHttpHandler {
             }
         }
         return urlString;
-    }
-
-    private JsonObject handleResponseStream(InputStream stream) throws IOException, IllegalStateException {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-        StringBuilder builder = new StringBuilder();
-        String line;
-        while ((line = reader.readLine()) != null) {
-            builder.append(line);
-        }
-
-        reader.close();
-        stream.close();
-
-        if (builder.length() <= 0)
-            throw new IOException("Response stream did not yield any data.");
-
-        JsonParser parser = new JsonParser();
-        return (JsonObject) parser.parse(builder.toString());
     }
 
     private class TokenEndpointResponse {
@@ -287,13 +284,13 @@ public class ApiHttpHandler {
     }
 
     private class AsyncTaskResponse {
-        private InputStream _stream;
+        private String _resultString;
         private Exception _exception;
         private boolean _hasError;
 
-        public AsyncTaskResponse(InputStream stream) {
+        public AsyncTaskResponse(String resultObject) {
             super();
-            _stream = stream;
+            _resultString = resultObject;
         }
 
         public AsyncTaskResponse(Exception exception) {
@@ -302,7 +299,7 @@ public class ApiHttpHandler {
             _hasError = true;
         }
 
-        public InputStream getInputStream() { return _stream; }
+        public String getResultString() { return _resultString; }
         public Exception getError() { return _exception; }
         public boolean hasError() { return _hasError; }
     }

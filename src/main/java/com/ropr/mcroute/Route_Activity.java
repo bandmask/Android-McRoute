@@ -38,6 +38,7 @@ import com.google.gson.JsonObject;
 import com.mcroute.R;
 import com.ropr.mcroute.adapters.TrackingPointAdapter;
 import com.ropr.mcroute.handlers.ApiHttpHandler;
+import com.ropr.mcroute.handlers.RouteHandler;
 import com.ropr.mcroute.interfaces.LocationUpdater;
 import com.ropr.mcroute.models.McRoute;
 import com.ropr.mcroute.models.McRouting;
@@ -369,7 +370,7 @@ public class Route_Activity extends FragmentActivity implements LocationUpdater,
 	}
 
 	private void handleSyncRoute() {
-		JsonObject response = ApiHttpHandler.getInstance().HandlePost("mcroute/", McRouteJsonParser.toJson(_activeRoute));
+		String response = RouteHandler.getInstance().postRoute(_activeRoute);
 		Toast.makeText(getApplicationContext(), "Route is synced", Toast.LENGTH_SHORT).show();
 
 	}

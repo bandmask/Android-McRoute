@@ -6,19 +6,14 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
 import com.mcroute.R;
 import com.ropr.mcroute.fragments.LoginFragment;
 import com.ropr.mcroute.fragments.SessionFragment;
-import com.ropr.mcroute.handlers.ApiHttpHandler;
+import com.ropr.mcroute.handlers.ProfileHandler;
 import com.ropr.mcroute.interfaces.SessionUpdater;
 import com.ropr.mcroute.models.McRouteProfile;
 import com.ropr.mcroute.models.SessionData;
 import com.ropr.mcroute.sources.StaticResources;
-
-import java.util.HashMap;
 
 /**
  * Created by NIJO7810 on 2016-05-03.
@@ -47,13 +42,9 @@ public class Start_Activity extends Activity implements SessionUpdater {
             transaction.commit();
         } else {
             try {
-                String action = "profile/GetProfileByUserId";
-                HashMap<String, String> dataValues = new HashMap<String, String>();
-                dataValues.put("userId", StaticResources.SessionManager.getUserId());
-                JsonObject apiResult = ApiHttpHandler.getInstance().handleGet(action, dataValues);
+                McRouteProfile profile = ProfileHandler.getInstance().getProfile(StaticResources.SessionManager.getUserId(), true);
 
-                Gson gson = new GsonBuilder().create();
-                McRouteProfile profile = gson.fromJson(apiResult, McRouteProfile.class);
+                if (profile == null) throw new IllegalStateException();
 
                 Intent sessionIntent = new Intent();
                 sessionIntent.putExtra(StaticResources.EXTRA_SESSION_PROFILE, profile);

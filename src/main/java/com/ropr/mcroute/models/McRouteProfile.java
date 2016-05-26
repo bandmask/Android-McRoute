@@ -36,6 +36,8 @@ public class McRouteProfile implements Parcelable {
     public String getProfilePicture() { return _profilePicture; }
     public ArrayList<McRoute> getRoutes() { return _routes; }
 
+    public void setRoutes(ArrayList<McRoute> routes) { _routes = routes; }
+
     public static final Parcelable.Creator<McRouteProfile> CREATOR = new Parcelable.Creator<McRouteProfile>() {
         public McRouteProfile createFromParcel(Parcel in) {
             return new McRouteProfile(in);

@@ -30,6 +30,7 @@ android {
 
     buildTypes {
         debug {
+            shrinkResources false
             minifyEnabled false
             versionNameSuffix '-DEBUG'
             signingConfig signingConfigs.debug
