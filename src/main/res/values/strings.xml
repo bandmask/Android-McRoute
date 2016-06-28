@@ -23,4 +23,12 @@
     <string name="menu_route_action_save">Save</string>
     <string name="menu_route_action_sync">Sync</string>
     <string name="menu_route_action_delete">Delete</string>
+
+    <string name="menu_config_route_configure">Configure</string>
+    <string name="config_route_file_name">route.config</string>
+    <string name="config_route_txt_routing_interval">Routing interval:</string>
+    <string name="config_route_txt_fastest_interval">Fastest interval:</string>
+    <string name="config_route_txt_smallest_displacement">Smallest displacement:</string>
+    <string name="config_route_txt_save_config">Save config</string>
+    <string name="config_route_txt_discard_config">Discard changes</string>
 </resources>

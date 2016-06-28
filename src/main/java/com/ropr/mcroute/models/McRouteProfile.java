@@ -56,7 +56,7 @@ public class McRouteProfile implements Parcelable {
         _gender = in.readString();
         _profilePicture = in.readString();
         _routes = new ArrayList<McRoute>();
-        in.readTypedList(_routes, McRoute.CREATOR);
+        in.readArrayList(McRoute.class.getClassLoader());
     }
 
     @Override
@@ -70,6 +70,6 @@ public class McRouteProfile implements Parcelable {
         parcel.writeString(_currentCity);
         parcel.writeString(_gender);
         parcel.writeString(_profilePicture);
-        parcel.writeTypedList(_routes);
+        parcel.writeList(_routes);
     }
 }

@@ -98,7 +98,7 @@ public class LoginFragment extends Fragment implements AboutFragment.CloseAboutF
         if (_aboutFragment == null)
             _aboutFragment = new AboutFragment();
 
-        if (fragmentManager.findFragmentByTag("about_fragment") != null)
+        if (fragmentManager.findFragmentByTag("about_fragment") == null)
             transaction.add(R.id.fragment_about_placeholder, _aboutFragment, "about_fragment");
         else
             transaction.replace(R.id.fragment_about_placeholder, _aboutFragment, "about_fragment");

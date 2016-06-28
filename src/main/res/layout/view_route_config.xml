@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/txtRoutingInterval"
+        android:text="@string/config_route_txt_routing_interval"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="20dp"/>
+
+    <EditText
+        android:id="@+id/editRoutingInterval"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="numberDecimal"
+        android:layout_alignBaseline="@+id/txtRoutingInterval"
+        android:layout_alignBottom="@+id/txtRoutingInterval"
+        android:layout_toEndOf="@+id/txtRoutingInterval"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="26dp"
+        android:ems="10"/>
+
+    <TextView
+        android:id="@+id/txtFastestInterval"
+        android:text="@string/config_route_txt_fastest_interval"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_below="@+id/txtRoutingInterval"
+        android:layout_marginTop="20dp"/>
+
+    <EditText
+        android:id="@+id/editFastestInterval"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="numberDecimal"
+        android:layout_alignBaseline="@+id/txtFastestInterval"
+        android:layout_alignBottom="@+id/txtFastestInterval"
+        android:layout_toEndOf="@+id/txtFastestInterval"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="26dp"
+        android:ems="10"/>
+
+    <TextView
+        android:id="@+id/txtSmallestDisplacement"
+        android:text="@string/config_route_txt_smallest_displacement"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_below="@+id/txtFastestInterval"
+        android:layout_marginTop="20dp"/>
+
+    <EditText
+        android:id="@+id/editSmallestDisplacement"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="numberDecimal"
+        android:layout_alignBaseline="@+id/txtSmallestDisplacement"
+        android:layout_alignBottom="@+id/txtSmallestDisplacement"
+        android:layout_toEndOf="@+id/txtSmallestDisplacement"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="26dp"
+        android:ems="10"/>
+
+    <Button
+        android:id="@+id/btnSaveConfig"
+        android:text="@string/config_route_txt_save_config"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtSmallestDisplacement"
+        android:layout_marginTop="20dp"/>
+
+    <Button
+        android:id="@+id/btnDiscardConfig"
+        android:text="@string/config_route_txt_discard_config"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btnSaveConfig"
+        android:layout_marginTop="10dp"/>
+</RelativeLayout>

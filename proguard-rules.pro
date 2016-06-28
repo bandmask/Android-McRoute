@@ -17,6 +17,8 @@
 #}
 -verbose
 -keep class com.ropr.mcroute.** { *; }
+-keep class * implements com.ropr.mcroute.** { *; }
+-keepclassmembers class com.ropr.mcroute.** { *; }
 
 -dontwarn com.google.android.gms.internal.**
 -keep class com.google.android.gms.internal.** { *; }

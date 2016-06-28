@@ -16,7 +16,8 @@ public class JsonHandler {
     }
 
     protected static JsonHandler getInstance() {
-        _handler = new JsonHandler();
+        if (_handler == null)
+            _handler = new JsonHandler();
         return _handler;
     }
 

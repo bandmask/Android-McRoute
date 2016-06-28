@@ -38,10 +38,12 @@ import com.google.gson.JsonObject;
 import com.mcroute.R;
 import com.ropr.mcroute.adapters.TrackingPointAdapter;
 import com.ropr.mcroute.handlers.ApiHttpHandler;
+import com.ropr.mcroute.handlers.RouteConfigHandler;
 import com.ropr.mcroute.handlers.RouteHandler;
 import com.ropr.mcroute.interfaces.LocationUpdater;
 import com.ropr.mcroute.models.McRoute;
 import com.ropr.mcroute.models.McRouting;
+import com.ropr.mcroute.models.RouteConfig;
 import com.ropr.mcroute.services.LocationService;
 import com.ropr.mcroute.sources.ErrorDialogFragment;
 import com.ropr.mcroute.sources.McRouteJsonParser;
@@ -220,11 +222,13 @@ public class Route_Activity extends FragmentActivity implements LocationUpdater,
 
 			LocalBroadcastManager.getInstance(this).registerReceiver(_locationReceiver, new IntentFilter(StaticResources.EVENT_NEW_LOCATION));
 
+			RouteConfig config = new RouteConfigHandler(this).getCurrentConfig();
+
 			_locationRequest = LocationRequest.create();
-			_locationRequest.setInterval(1000);
-			_locationRequest.setFastestInterval(3600);
+			_locationRequest.setInterval(config.getRoutingInterval());
+			_locationRequest.setFastestInterval(config.getFastestInterval());
 			_locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-			_locationRequest.setSmallestDisplacement(100);
+			_locationRequest.setSmallestDisplacement(config.getSmallestDisplacement());
 
 			LocationServices.FusedLocationApi.requestLocationUpdates(_locationClient, _locationRequest, _pendingIntent);
 			

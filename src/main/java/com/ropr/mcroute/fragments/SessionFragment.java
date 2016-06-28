@@ -35,6 +35,7 @@ public class SessionFragment extends Fragment {
     private TextView _numRoutings;
 
     private SessionUpdater _sessionUpdater;
+    private RouteFragment _routeFragment;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -76,9 +77,24 @@ public class SessionFragment extends Fragment {
             case R.id.menu_session_action_signout:
                 handleSignOut();
                 return true;
+            case R.id.menu_route_config_configure:
+                handleRouteConfigFragment();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void handleRouteConfigFragment() {
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+
+        RouteConfigFragment routeConfigFragment = new RouteConfigFragment();
+
+        transaction.replace(R.id.fragment_route_placeholder, routeConfigFragment, "route_fragment");
+
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 
     private void init() {
@@ -102,16 +118,16 @@ public class SessionFragment extends Fragment {
 
                 Intent intent = new Intent();
                 intent.putExtra(StaticResources.EXTRA_PROFILE_ID, profile.getProfileId());
-                RouteFragment routeFragment = new RouteFragment();
-                routeFragment.setArguments(intent.getExtras());
+                _routeFragment = new RouteFragment();
+                _routeFragment.setArguments(intent.getExtras());
 
-                FragmentManager fragmentManager = getChildFragmentManager();
+                FragmentManager fragmentManager = getFragmentManager();
                 FragmentTransaction transaction = fragmentManager.beginTransaction();
 
                 if (fragmentManager.findFragmentByTag("route_fragment") != null)
-                    transaction.replace(R.id.fragment_route_placeholder, routeFragment, "route_fragment");
+                    transaction.replace(R.id.fragment_route_placeholder, _routeFragment, "route_fragment");
                 else
-                    transaction.add(R.id.fragment_route_placeholder, routeFragment, "route_fragment");
+                    transaction.add(R.id.fragment_route_placeholder, _routeFragment, "route_fragment");
 
                 transaction.commit();
             } catch (Exception ex) {
