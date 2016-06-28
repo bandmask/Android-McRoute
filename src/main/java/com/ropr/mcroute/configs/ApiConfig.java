@@ -5,7 +5,7 @@ package com.ropr.mcroute.configs;
  */
 public class ApiConfig {
     public static final String API_ENDPOINT = "http://mcrutt.se/api/";
-    public static final String API_CLIENT = "mcrutt.se";
-    public static final String API_SECRET = "hejhej123";
+    public static final String API_CLIENT = "mcrutt.android.se";
+    public static final String API_SECRET = "vKNXvjnMJyk4HJZvUo2u";
     public static final String API_REDIRECT_URL = "http://mcrutt.se/authcomplete.html";
 }
